@@ -18,7 +18,6 @@ DIM SHARED five(500)
 DIM SHARED six(500)
 DIM SHARED seven(500)
 DIM SHARED eight(500)
-DIM SHARED nine(500)
 DIM SHARED empty(500)
 
 RANDOMIZE TIMER
@@ -27,28 +26,62 @@ SCREEN 13
 initialize
 gameloop
 
-SUB initialize
-    DEF SEG = VARSEG(picture(0)): BLOAD "assets/gfx/picture.gfx", VARPTR(picture(0)): DEF SEG
+SUB drawboard
+    FOR y = 1 TO 3
+        FOR x = 1 TO 3
+            IF map(x, y) = 0 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), empty(0), PSET
+            IF map(x, y) = 1 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), one(0), PSET
+            IF map(x, y) = 2 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), two(0), PSET
+            IF map(x, y) = 3 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), three(0), PSET
+            IF map(x, y) = 4 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), four(0), PSET
+            IF map(x, y) = 5 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), five(0), PSET
+            IF map(x, y) = 6 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), six(0), PSET
+            IF map(x, y) = 7 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), seven(0), PSET
+            IF map(x, y) = 8 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), eight(0), PSET
+        NEXT
+    NEXT
+END SUB
 
-    PUT (1, 1), picture(0), PSET
+SUB drawframe
+    LINE (29, 49)-(124, 49)
+    LINE (29, 144)-(124, 144)
+    LINE (124, 49)-(124, 144)
+    LINE (29, 49)-(29, 144)
 
-    GET (1, 1)-(30, 30), one(0)
-    GET (31, 1)-(60, 30), two(0)
-    GET (61, 1)-(90, 30), three(0)
-    GET (1, 31)-(30, 60), four(0)
-    GET (31, 31)-(60, 60), five(0)
-    GET (61, 31)-(90, 60), six(0)
-    GET (1, 61)-(30, 90), seven(0)
-    GET (31, 61)-(60, 90), eight(0)
-    GET (61, 61)-(90, 90), nine(0)
+    LINE (0, 0)-(319, 0)
+    LINE (319, 0)-(319, 199)
+    LINE (319, 199)-(0, 199)
+    LINE (0, 199)-(0, 0)
 
-    CLS
+    LINE (2, 2)-(158, 2)
+    LINE (158, 2)-(158, 197)
+    LINE (158, 197)-(2, 197)
+    LINE (2, 197)-(2, 2)
 
-    GET (91, 91)-(120, 120), empty(0)
+    LINE (160, 2)-(317, 2)
+    LINE (317, 2)-(317, 197)
+    LINE (317, 197)-(160, 197)
+    LINE (160, 197)-(160, 2)
+END SUB
+
+SUB drawinterface
+    LOCATE 2, 22
+    PRINT "[ PicturePuzzler ]"
+
+    LOCATE 3, 22
+    PRINT "["; moves; "- moves ]"
+
+    PUT (190, 51), picture(0), PSET
+
+    LOCATE 22, 22
+    PRINT "[ r - refresh ]"
+
+    LOCATE 23, 22
+    PRINT "[ Esc - escape]"
 END SUB
 
 SUB gameloop
-    resetloop:
+resetloop:
 
     CLS
 
@@ -99,6 +132,25 @@ SUB gameloop
     LOOP
 END SUB
 
+SUB initialize
+    DEF SEG = VARSEG(picture(0)): BLOAD "assets/gfx/picture.gfx", VARPTR(picture(0)): DEF SEG
+
+    PUT (1, 1), picture(0), PSET
+
+    GET (1, 1)-(30, 30), one(0)
+    GET (31, 1)-(60, 30), two(0)
+    GET (61, 1)-(90, 30), three(0)
+    GET (1, 31)-(30, 60), four(0)
+    GET (31, 31)-(60, 60), five(0)
+    GET (61, 31)-(90, 60), six(0)
+    GET (1, 61)-(30, 90), seven(0)
+    GET (31, 61)-(60, 90), eight(0)
+
+    CLS
+
+    GET (91, 91)-(120, 120), empty(0)
+END SUB
+
 SUB resetboard
     a = 0
     FOR y = 1 TO 3
@@ -143,61 +195,6 @@ SUB scrambleboard
     NEXT
 END SUB
 
-SUB drawboard
-    FOR y = 1 TO 3
-        FOR x = 1 TO 3
-            IF map(x, y) = 0 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), empty(0), PSET
-            IF map(x, y) = 1 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), one(0), PSET
-            IF map(x, y) = 2 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), two(0), PSET
-            IF map(x, y) = 3 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), three(0), PSET
-            IF map(x, y) = 4 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), four(0), PSET
-            IF map(x, y) = 5 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), five(0), PSET
-            IF map(x, y) = 6 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), six(0), PSET
-            IF map(x, y) = 7 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), seven(0), PSET
-            IF map(x, y) = 8 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), eight(0), PSET
-            IF map(x, y) = 9 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), nine(0), PSET
-        NEXT
-    NEXT
-END SUB
-
-SUB drawinterface
-    LOCATE 2, 22
-    PRINT "[ PicturePuzzler ]"
-
-    LOCATE 3, 22
-    PRINT "["; moves; "- moves ]"
-
-    PUT (190, 51), picture(0), PSET
-
-    LOCATE 22, 22
-    PRINT "[ r - refresh ]"
-
-    LOCATE 23, 22
-    PRINT "[ Esc - escape]"
-END SUB
-
-SUB drawframe
-    LINE (29, 49)-(124, 49)
-    LINE (29, 144)-(124, 144)
-    LINE (124, 49)-(124, 144)
-    LINE (29, 49)-(29, 144)
-
-    LINE (0, 0)-(319, 0)
-    LINE (319, 0)-(319, 199)
-    LINE (319, 199)-(0, 199)
-    LINE (0, 199)-(0, 0)
-
-    LINE (2, 2)-(158, 2)
-    LINE (158, 2)-(158, 197)
-    LINE (158, 197)-(2, 197)
-    LINE (2, 197)-(2, 2)
-
-    LINE (160, 2)-(317, 2)
-    LINE (317, 2)-(317, 197)
-    LINE (317, 197)-(160, 197)
-    LINE (160, 197)-(160, 2)
-END SUB
-
 SUB trymove (inputkey$, x, y)
     IF inputkey$ = "w" AND y < 3 THEN
         map(x, y) = map(x, (y + 1))
@@ -221,3 +218,4 @@ SUB trymove (inputkey$, x, y)
 
     IF map(x, y) <> 0 THEN moves = moves + 1
 END SUB
+
