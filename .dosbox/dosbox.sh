@@ -1,6 +1,11 @@
 #!/bin/bash
 
-type dosbox >/dev/null 2>&1 && $(which dosbox) -noconsole -conf .dosbox/dosbox.lin.conf && exit || { echo >&2 "DOSBox not found!"; }
+SCRIPT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}") &> /dev/null && pwd)"
+cd ${SCRIPT_DIR}
 
-read -p "Press Enter to continue"
+. inc/finddosbox.sh
 
+cd ..
+
+echo "Running DOSBox..."
+${DBOX_CMD} -noconsole -conf .dosbox/conf/linux.conf 2>&1 >/dev/null

@@ -2,7 +2,7 @@
 
 CALL inc\finddosbox.bat
 
-cd %~dp0\..
+cd ..
 
 echo|set /p="Running DOSBox..."
 CALL %DBOX_CMD% -conf .dosbox\conf\windows.conf -noconsole
