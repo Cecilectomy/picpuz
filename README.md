@@ -1,8 +1,8 @@
 # PICPUZ #
 
-Old QuickBASIC/QBasic picture scramble game.
+Old QuickBASIC / QBasic picture scramble game.
 
-I originally wrote this in the early 2000's when I was first getting in to programming. TI83 and QuickBASIC were my entry into programming, and this was one of the first things I coded. I have re-organized and cleaned up the code, but it is 99% the original code.
+I originally wrote this in the early 2000's when I was first getting into programming. TI83 Basic and QuickBASIC were my entry into programming, and this was one of the first things I coded. I have re-organized and cleaned up the code, but it is 99% the original code.
 
 ## How To Play ##
 
