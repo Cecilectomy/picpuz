@@ -8,6 +8,7 @@ DECLARE SUB drawframe ()
 DECLARE SUB trymove (inputkey$, x, y)
 
 DIM SHARED map(3, 3)
+DIM SHARED solved
 DIM SHARED moves
 DIM SHARED picture(5000)
 DIM SHARED one(500)
@@ -27,19 +28,23 @@ initialize
 gameloop
 
 SUB drawboard
-    FOR y = 1 TO 3
-        FOR x = 1 TO 3
-            IF map(x, y) = 0 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), empty(0), PSET
-            IF map(x, y) = 1 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), one(0), PSET
-            IF map(x, y) = 2 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), two(0), PSET
-            IF map(x, y) = 3 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), three(0), PSET
-            IF map(x, y) = 4 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), four(0), PSET
-            IF map(x, y) = 5 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), five(0), PSET
-            IF map(x, y) = 6 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), six(0), PSET
-            IF map(x, y) = 7 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), seven(0), PSET
-            IF map(x, y) = 8 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), eight(0), PSET
+    IF solved THEN
+        PUT (32, 52), picture(0), PSET
+    ELSE
+        FOR y = 1 TO 3
+            FOR x = 1 TO 3
+                IF map(x, y) = 0 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), empty(0), PSET
+                IF map(x, y) = 1 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), one(0), PSET
+                IF map(x, y) = 2 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), two(0), PSET
+                IF map(x, y) = 3 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), three(0), PSET
+                IF map(x, y) = 4 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), four(0), PSET
+                IF map(x, y) = 5 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), five(0), PSET
+                IF map(x, y) = 6 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), six(0), PSET
+                IF map(x, y) = 7 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), seven(0), PSET
+                IF map(x, y) = 8 THEN PUT ((x * 30) + x, (y * 30) + (y + 20)), eight(0), PSET
+            NEXT
         NEXT
-    NEXT
+    END IF
 END SUB
 
 SUB drawframe
@@ -71,6 +76,11 @@ SUB drawinterface
     LOCATE 3, 22
     PRINT "["; moves; "- moves ]"
 
+    IF solved THEN
+        LOCATE 4, 22
+        PRINT "[ Solved ]"
+    END IF
+
     PUT (190, 51), picture(0), PSET
 
     LOCATE 22, 22
@@ -82,9 +92,9 @@ END SUB
 
 SUB gameloop
 resetloop:
-
     CLS
 
+    solved = 0
     moves = 0
 
     drawframe
@@ -92,10 +102,9 @@ resetloop:
     resetboard
     scrambleboard
 
-    DO UNTIL getkey$ = CHR$(27)
-        getkey$ = INKEY$
-        
-        IF getkey$ = "r" THEN GOTO resetloop
+    DO UNTIL getkey$ = CHR$(27): getkey$ = INKEY$
+        _LIMIT(30)
+        _DISPLAY
 
         emptyX = 0
         emptyY = 0
@@ -108,26 +117,16 @@ resetloop:
             NEXT
         NEXT
 
+        IF getkey$ = "r" THEN GOTO resetloop
+
         trymove getkey$, emptyX, emptyY
+
         drawinterface
         drawboard
 
-        IF map(1, 1) = 1 AND map(2, 1) = 2 AND map(3, 1) = 3 AND map(1, 2) = 4 AND map(2, 2) = 5 AND map(3, 2) = 6 AND map(1, 3) = 7 AND map(2, 3) = 8 AND map(3, 3) = 0 THEN
-            CLS
-            
-            drawframe
-            drawinterface
-
-            PUT (32, 52), picture(0), PSET
-
-            DO UNTIL getkey$ = CHR$(27)
-                getkey$ = INKEY$
-
-                LOCATE 4, 22
-                PRINT "[ Solved ]"
-
-                IF getkey$ = "r" THEN GOTO resetloop
-            LOOP
+        IF NOT solved AND map(1, 1) = 1 AND map(2, 1) = 2 AND map(3, 1) = 3 AND map(1, 2) = 4 AND map(2, 2) = 5 AND map(3, 2) = 6 AND map(1, 3) = 7 AND map(2, 3) = 8 AND map(3, 3) = 0 THEN
+            CLS: drawframe
+            solved = -1
         END IF
     LOOP
 END SUB
@@ -196,6 +195,10 @@ SUB scrambleboard
 END SUB
 
 SUB trymove (inputkey$, x, y)
+    IF solved THEN
+        EXIT SUB
+    END IF
+
     IF inputkey$ = "w" AND y < 3 THEN
         map(x, y) = map(x, (y + 1))
         map(x, (y + 1)) = 0

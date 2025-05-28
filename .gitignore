@@ -7,10 +7,10 @@
 ## End Files
 
 ## Directories
-.devcontainer
-.vscode
-build
-dist
+/.devcontainer
+/.vscode
+/build
+/dist
 ## End Directories
 
 ## Un-Ignore
