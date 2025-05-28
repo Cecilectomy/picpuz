@@ -27,6 +27,8 @@ SCREEN 13
 initialize
 gameloop
 
+SYSTEM
+
 SUB drawboard
     IF solved THEN
         PUT (32, 52), picture(0), PSET
