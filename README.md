@@ -2,7 +2,9 @@
 
 Old QuickBASIC / QBasic picture scramble game.
 
-I originally wrote this in the early 2000's when I was first getting into programming. TI83 Basic and QuickBASIC were my entry into programming, and this was one of the first things I coded. I have re-organized and cleaned up the code, and updated for QB64 compatibility, but it is mostly still the original code and logic, and retains the ability to compile / run using original hardware and QB45 software tools.
+I originally wrote this in the early 2000's when I was first getting into programming. TI83 Basic and QuickBASIC were my entry into programming, and this was one of the first things I coded.
+
+I have re-organized and cleaned up the code, and updated for QB64 compatibility, but it is mostly still the original code and logic, and retains the ability to compile / run using original hardware and QB45 software tools.
 
 ## How To Play ##
 
